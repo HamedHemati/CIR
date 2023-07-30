@@ -1,0 +1,8 @@
+# @package _global_
+
+dataset: tinyimagenet
+n_classes: 200
+input_size: 64
+
+# Number of classes used for pretraining
+n_pretraining_classes: 0

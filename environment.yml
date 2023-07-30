@@ -1,0 +1,25 @@
+name: cir
+channels:
+- conda-forge
+- pytorch
+dependencies:
+- pip
+- psutil
+- conda-forge::gputil
+- wandb
+- tensorboard>=1.15
+- scikit-learn
+- matplotlib
+- numpy
+- conda-forge::quadprog
+- tqdm
+- conda-forge::pycocotools
+- conda-forge::torchmetrics
+- python=3.9
+- pytorch::pytorch>=2.0
+- pytorch::torchvision>=0.9.0, <0.15
+- pytorch::torchaudio>=0.8.0, <2.0
+- pip:
+    - avalanache-lib==0.4
+    - dill
+    - seaborn

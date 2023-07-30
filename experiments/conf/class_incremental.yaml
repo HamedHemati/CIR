@@ -1,0 +1,16 @@
+# Model
+model: resnet18
+lr: 0.03
+
+checkpoint_saving_steps: 50
+
+# load from pretrained model
+load_from_pretrained_model: False
+pretrained_ckpt_path: Null
+
+# Other
+defaults:
+  - _generic
+  - strategy: naive
+  - dataset: cifar-100
+  - generator: sampling_based

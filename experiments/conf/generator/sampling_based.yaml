@@ -1,0 +1,18 @@
+# @package _global_
+
+generator: "sampling_based"
+
+n_e: 20
+s_e: 5000
+p_a: 0.0
+
+dist_first_occurrence:
+  dist_type: "dist_type"
+
+dist_recurrence:
+  dist_type: "dist_type"
+
+sampler_type: "random"
+use_all_samples: False
+
+classes_to_use: Null

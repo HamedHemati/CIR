@@ -1,0 +1,6 @@
+# @package _global_
+
+generator: "slot_based"
+
+N: 20
+K: 5

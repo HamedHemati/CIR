@@ -1,0 +1,23 @@
+outputs_dir:  ./outputs
+dataset_root: ./data/datasets
+num_workers: 5
+wandb_proj: ""
+save_results: False
+seed: 0
+cuda: 0
+description: ""
+
+# Other
+defaults:
+  - _self_
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+  sweep:
+    dir: .
+    subdir: ""

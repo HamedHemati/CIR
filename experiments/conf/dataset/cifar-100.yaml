@@ -1,0 +1,8 @@
+# @package _global_
+
+dataset: cifar-100
+n_classes: 100
+input_size: 32
+
+# Number of classes used for pretraining
+n_pretraining_classes: 0
