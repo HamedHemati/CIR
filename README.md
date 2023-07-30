@@ -55,7 +55,7 @@ Then, start an experiment using the scripts provided under `experiments/scripts`
 python -m experiments.train_cir --multirun \
   strategy=er_rs \
   dataset=cifar-100 \
-  args.generator=slot_based \
+  generator=slot_based \
   N=10 \
   K=10,30,50,80,100 \
   memory_size=2000

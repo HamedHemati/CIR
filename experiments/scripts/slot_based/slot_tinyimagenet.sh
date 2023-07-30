@@ -2,7 +2,7 @@
 python -m experiments.train_cir --multirun \
  strategy=naive \
  dataset=tinyimagenet \
- args.generator=slot_based \
+ generator=slot_based \
  N=10 \
  K=20,60,100,160,200
 
@@ -10,7 +10,7 @@ python -m experiments.train_cir --multirun \
 python -m experiments.train_cir --multirun \
   strategy=er_rs \
   dataset=tinyimagenet \
-  args.generator=slot_based \
+  generator=slot_based \
   N=10 \
   K=20,60,100,160,200 \
   memory_size=4000
@@ -19,7 +19,7 @@ python -m experiments.train_cir --multirun \
 python -m experiments.train_cir --multirun \
  strategy=lwf \
  dataset=tinyimagenet \
- args.generator=slot_based \
+ generator=slot_based \
  N=10 \
  K=20,60,100,160,200 \
  temperature=1,2 \
@@ -29,7 +29,7 @@ python -m experiments.train_cir --multirun \
 python -m experiments.train_cir --multirun \
  strategy=ewc \
  dataset=tinyimagenet \
- args.generator=slot_based \
+ generator=slot_based \
  N=10 \
  ewc_lambda=0.1,10 \
  K=20,60,100,160,200
@@ -38,6 +38,6 @@ python -m experiments.train_cir --multirun \
 python -m experiments.train_cir --multirun \
  strategy=agem \
  dataset=tinyimagenet \
- args.generator=slot_based \
+ generator=slot_based \
  N=10 \
  K=20,60,100,160,200
