@@ -37,7 +37,7 @@ The code structure is inspired by the [Avalanche](https://github.com/ContinualAI
 
 ## Running an experiment
 
-This repository are based on the Avalanche library. You can first create a conda enviroment and install required packages using `environment.yml`:
+This repository is based on the Avalanche library. You can first create a conda enviroment and install required packages using `environment.yml`:
 
 1. **Install [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html)**
 
