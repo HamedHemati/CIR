@@ -58,7 +58,7 @@ python -m experiments.train_cir --multirun \
   generator=slot_based \
   N=10 \
   K=10,30,50,80,100 \
-  memory_size=2000
+  buffer_size=2000
 ```
 
 ## Generating CIR benchmarks
