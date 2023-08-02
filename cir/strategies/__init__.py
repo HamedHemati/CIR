@@ -5,7 +5,8 @@ from avalanche.training.supervised import (
     Naive,
     EWC,
     SynapticIntelligence,
-    LwF
+    LwF,
+    AGEM
 )
 from avalanche.training.storage_policy import (
     ClassBalancedBuffer,
@@ -43,6 +44,9 @@ def get_strategy(
 
     elif args.strategy == "LwF":
         STRATEGY = LwF
+
+    elif args.strategy == "AGEM":
+        STRATEGY = AGEM
 
     elif args.strategy == "ER-GSS":
         input_size = [3, args.input_size, args.input_size]

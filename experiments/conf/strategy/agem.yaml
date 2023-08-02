@@ -1,0 +1,10 @@
+# @package _global_
+
+# Strategy
+strategy: "AGEM"
+strategy_params:
+  train_mb_size: 64
+  eval_mb_size: 256
+  train_epochs: 40
+  patterns_per_exp: 256
+  sample_size: 256

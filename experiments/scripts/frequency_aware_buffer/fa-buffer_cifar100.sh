@@ -55,5 +55,5 @@ python -m experiments.train_cir --multirun  \
       dist_first_occurrence.dist_type="geometric" +dist_first_occurrence.p=0.2 \
       seed=0,1,3 dist_recurrence.dist_type="fixed-dual" +dist_recurrence.p_l=0.1 \
       +dist_recurrence.p_h=1.0  +dist_recurrence.frac=0.1,0.3,0.5 \
-      n_e=100 s_e=2000 p_a=0.0 \
+      n_e=100 s_e=2000 \
       num_workers=3 wandb_proj="FA-Buffer" save_results=True  

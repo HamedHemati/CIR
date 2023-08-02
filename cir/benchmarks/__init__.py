@@ -25,13 +25,9 @@ def get_cir_benchmark(args):
             dataset_root=args.dataset_root,
             n_e=args.n_e,
             s_e=args.s_e,
-            p_a=args.p_a,
-            sampler_type=args.sampler_type,
-            use_all_samples=args.use_all_samples,
             dist_first_occurrence=args.dist_first_occurrence,
             dist_recurrence=args.dist_recurrence,
-            seed=args.seed,
-            classes_to_use=args.classes_to_use,
+            seed=args.seed
         )
 
     elif args.generator == "slot_based":
