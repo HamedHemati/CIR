@@ -247,9 +247,9 @@ def cir_slot_cifar100(dataset_root, N, K, seed=None):
     )
 
     train_set = CIFAR100(root=dataset_root, train=True,
-                         transform=train_transform)
+                         transform=train_transform, download=True)
     test_set = CIFAR100(root=dataset_root, train=False,
-                        transform=eval_transform)
+                        transform=eval_transform, download=True)
     benchmark = cir_slot_based(train_set, test_set, N, K, seed=seed)
     return benchmark
 
@@ -275,9 +275,9 @@ def cir_slot_tinyimagenet(dataset_root, N, K, seed=None):
     )
 
     train_set = TinyImagenet(root=dataset_root, train=True,
-                             transform=train_transform)
+                             transform=train_transform, download=True)
     test_set = TinyImagenet(root=dataset_root, train=False,
-                            transform=eval_transform)
+                            transform=eval_transform, download=True)
 
     benchmark = cir_slot_based(train_set, test_set, N, K, seed=seed)
     return benchmark

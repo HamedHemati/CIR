@@ -33,15 +33,8 @@ def main(args):
 
     paths = init_paths(args, exp_name)
 
-    if torch.cuda.is_available():
-        device = torch.device(f"cuda:{args.cuda}" if torch.cuda.is_available()
-                              and args.cuda >= 0 else "cpu")
-    else:
-        try:
-            device = torch.device("mps")
-        except RuntimeError:
-            device = torch.device("cpu")
-
+    # Set device
+    device = torch.device(args.device)
     print("Device: ", device)
 
     # Benchmark and evaluation plugins

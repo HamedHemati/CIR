@@ -4,7 +4,7 @@ num_workers: 5
 wandb_proj: ""
 save_results: False
 seed: 0
-cuda: 0
+device: "cpu"
 description: ""
 
 # Other
