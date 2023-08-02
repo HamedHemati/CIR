@@ -17,8 +17,10 @@ from cir.utils.generic import init_paths, get_exp_name, get_loggable_args
 from cir.benchmarks import get_cir_benchmark
 from cir.models import get_model
 from cir.strategies import get_strategy
-from cir.metrics import ExperiencePerClassAccuracy, \
+from cir.metrics import (
+    ExperiencePerClassAccuracy,
     ExperienceSeenClassesAccuracy
+)
 from cir.plugins import CheckpointSaver
 
 
@@ -61,12 +63,12 @@ def main(args):
     class_based_accuracies = [
         ExperiencePerClassAccuracy(
             args.n_classes,
-            present_classes_in_each_exp=benchmark.present_classes_in_each_exp
+            present_classes_in_each_exp=benchmark.details["classes_in_each_exp"]
         ),
         ExperienceSeenClassesAccuracy(
             args.n_classes,
             device=device,
-            seen_classes_in_each_exp=benchmark.seen_classes
+            seen_classes_in_each_exp=benchmark.details["seen_classes_up_to_exp"]
         )
     ]
 
@@ -93,7 +95,7 @@ def main(args):
     strategy = get_strategy(args, model, optimizer, criterion,
                             eval_plugin, plugins, device)
 
-    # Training and evaluation
+    # ==========> Main training and evaluation loop
     results = []
     for i, exp in enumerate(benchmark.train_stream):
         print(f"Starting training on experience {i} ...")

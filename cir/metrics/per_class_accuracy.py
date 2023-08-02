@@ -10,6 +10,7 @@ from avalanche.evaluation.metric_utils import phase_and_task
 from avalanche.evaluation.metrics.mean import Mean
 from avalanche.evaluation.metric_definitions import get_metric_name
 from avalanche.evaluation.metric_results import MetricValue
+from torchmetrics import Accuracy
 if TYPE_CHECKING:
     from avalanche.evaluation.metric_results import MetricResult
     from avalanche.training.templates.supervised import SupervisedTemplate
@@ -30,7 +31,8 @@ class PerClassAccuracy(Metric[float]):
         true_y: Tensor
     ) -> None:
         if len(true_y) != len(predicted_y):
-            raise ValueError("Size mismatch for true_y and predicted_y tensors")
+            raise ValueError(
+                "Size mismatch for true_y and predicted_y tensors")
 
         true_y = torch.as_tensor(true_y)
         predicted_y = torch.as_tensor(predicted_y)
@@ -49,7 +51,8 @@ class PerClassAccuracy(Metric[float]):
             predicted_y_i = predicted_y[idx_c]
             true_y_i = true_y[idx_c]
 
-            true_positives = float(torch.sum(torch.eq(predicted_y_i, true_y_i)))
+            true_positives = float(
+                torch.sum(torch.eq(predicted_y_i, true_y_i)))
             total_patterns = len(true_y_i)
             self._mean_accuracy[class_id].update(
                 true_positives / total_patterns, total_patterns
@@ -65,7 +68,8 @@ class PerClassAccuracy(Metric[float]):
         self.reset_mean_accuracy()
 
 
-class PerClassAccuracyPluginMetric(GenericPluginMetric[float]):
+class PerClassAccuracyPluginMetric(GenericPluginMetric[float,
+                                                       PerClassAccuracy]):
     def __init__(self, reset_at, emit_at, mode, n_classes,
                  present_classes_in_each_exp=None):
         self._accuracy = PerClassAccuracy(n_classes)
@@ -143,7 +147,8 @@ class PerClassAccuracyPluginMetric(GenericPluginMetric[float]):
                 metric_name = "/".join(metric_name)
                 missing_avg = np.mean(all_present)
                 metrics.append(
-                    MetricValue(self, metric_name, missing_avg, plot_x_position)
+                    MetricValue(self, metric_name,
+                                missing_avg, plot_x_position)
                 )
 
             # =====> Log for missing classes
@@ -151,7 +156,8 @@ class PerClassAccuracyPluginMetric(GenericPluginMetric[float]):
                             range(exp_id + 1)]
             seen_classes = list(set(np.concatenate(seen_classes)))
             missing_classes = [c for c in seen_classes
-                               if c not in self.present_classes_in_each_exp[exp_id]]
+                               if c not in
+                               self.present_classes_in_each_exp[exp_id]]
 
             all_missing = []
             for k, v in metric_value.items():
@@ -180,7 +186,8 @@ class PerClassAccuracyPluginMetric(GenericPluginMetric[float]):
                 metric_name = "/".join(metric_name)
                 missing_avg = np.mean(all_missing)
                 metrics.append(
-                    MetricValue(self, metric_name, missing_avg, plot_x_position)
+                    MetricValue(self, metric_name,
+                                missing_avg, plot_x_position)
                 )
 
         return metrics
@@ -222,4 +229,3 @@ class ExperiencePerClassAccuracy(PerClassAccuracyPluginMetric):
 
     def __str__(self):
         return "Top1_PerClassAcc_Experience"
-

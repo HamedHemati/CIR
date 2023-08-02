@@ -9,10 +9,18 @@ from torchvision.transforms import (
 )
 from torch.utils.data import random_split
 
-from avalanche.benchmarks.utils import AvalancheDataset, \
-    AvalancheConcatDataset, AvalancheSubset
+from avalanche.benchmarks.utils import (
+    AvalancheDataset,
+    AvalancheConcatDataset,
+    AvalancheSubset
+)
 from avalanche.benchmarks import dataset_benchmark
-from avalanche.benchmarks.datasets import CIFAR100, MNIST, TinyImagenet, MiniImageNetDataset
+from avalanche.benchmarks.datasets import (
+    CIFAR100,
+    MNIST,
+    TinyImagenet,
+    MiniImageNetDataset
+)
 
 
 def cir_slot_based(
@@ -26,22 +34,25 @@ def cir_slot_based(
 
     Given a dataset, this function generates a CIR stream of length N.
 
-    The generator splits the data for each class into equal subsets, obtaining in total N*K subsets.
-    These are then divided equally and randomly among experiences. Inside each experience, the 
-    generator tries to assign slots of different classes to fill the experience, if possible.
-    If this is not possible, two or more slots of the same class may appear in the same experience.
-    In most settings, this will happen only for a few of the first experiences.
+    The generator splits the data for each class into equal subsets,
+    obtaining in total N*K subsets. These are then divided equally and randomly
+    among experiences. Inside each experience, the generator tries to assign
+    slots of different classes to fill the experience, if possible. If this is
+    not possible, two or more slots of the same class may appear in
+    the same experience. In most settings, this will happen only for a
+    few of the first experiences.
 
-    It is suggested to use this generator only if the samples are distributed roughly equally
-    among classes.
+    It is suggested to use this generator only if the samples are distributed 
+    roughly equally among classes.
 
     :param train_set: train set containing the stream train samples.
     :param test_set: test set containing the stream test samples.
     :param N: desired length of the stream.
     :param K: number of slots
     :param seed:
-    :return: <avl_data_seq, slot_table>, where avl_data_seq is a list of AvalancheDatasets, 
-        and slot_table shows how the slot->experience assignments.
+    :return: <avl_data_seq, slot_table>, where avl_data_seq is a list of
+        AvalancheDatasets, and slot_table shows how the slot->experience 
+        assignments.
     """
     if seed is not None:
         torch.random.manual_seed(seed)
@@ -82,8 +93,10 @@ def cir_slot_based(
 
         slots_per_class[cls] = []
         step = len(cls_idxs) // num_slots_per_class[cls]
-        for i in range(num_slots_per_class[cls]):  # split class-data into slots
-            cls_subset = AvalancheSubset(train_set, cls_idxs[i*step:(i+1)*step])
+        # split class-data into slots
+        for i in range(num_slots_per_class[cls]):
+            cls_subset = AvalancheSubset(
+                train_set, cls_idxs[i*step:(i+1)*step])
             slots_per_class[cls].append(cls_subset)
     assert sum([len(el) for el in slots_per_class.values()]) == N*K
 
@@ -93,10 +106,12 @@ def cir_slot_based(
     for eid in reversed(range(N)):
         # choose the classes for the current experience
         if len(known_classes) >= K:  # we sample classes without replacement, if possible
-            cls_chosen = np.random.choice(list(known_classes), replace=False, size=K)
+            cls_chosen = np.random.choice(
+                list(known_classes), replace=False, size=K)
             for c in cls_chosen:
                 num_slots_per_class[c] -= 1
-                if num_slots_per_class[c] == 0:  # remove classes that don't have available slots
+                # remove classes that don't have available slots
+                if num_slots_per_class[c] == 0:
                     known_classes.remove(c)
         else:
             # we have to sample the same class multiple times,
@@ -154,9 +169,21 @@ def cir_slot_based(
                                              for exp in benchmark.train_stream]
     benchmark.slot_table = slot_table
 
+    # List of seen classes up to each experience
+    classes_in_each_exp = []
+    seen_classes = []
+    seen_classes_up_to_exp = []
+    for i, exp in enumerate(benchmark.train_stream):
+        classes_in_each_exp.append(exp.classes_in_this_experience)
+        seen_classes += exp.classes_in_this_experience
+        seen_classes_up_to_exp.append(list(set(seen_classes)))
+
+    # Benchmark details
     benchmark.details = {
         "stream_table": scenario_table,
-        "n_samples_per_exp": benchmark.n_samples_per_exp
+        "n_samples_per_exp": benchmark.n_samples_per_exp,
+        "classes_in_each_exp": classes_in_each_exp,
+        "seen_classes_up_to_exp": seen_classes_up_to_exp,
     }
 
     def set_n_class_samples_per_exp(exp_id):
@@ -170,7 +197,6 @@ def cir_slot_based(
         _ = [_set_n_class_c(c.item()) for c in torch.unique(targets)]
 
     _ = [set_n_class_samples_per_exp(exp_id) for exp_id in range(n_e)]
-
 
     return benchmark
 
@@ -284,11 +310,14 @@ def cir_slot_miniimagenet(dataset_root, N, K, seed=None):
     perc_train = 0.7
     sizes = [int(trl*perc_train), trl-int(trl*perc_train)]
     if seed is not None:
-        train_set, test_set = random_split(train_set, sizes, generator=torch.Generator().manual_seed(seed))
+        train_set, test_set = random_split(
+            train_set, sizes, generator=torch.Generator().manual_seed(seed))
     else:
         train_set, test_set = random_split(train_set, sizes)
-    train_set = AvalancheDataset(train_set, transform=transforms.Compose([train_transform]))
-    test_set = AvalancheDataset(test_set, transform=transforms.Compose([eval_transform]))
+    train_set = AvalancheDataset(
+        train_set, transform=transforms.Compose([train_transform]))
+    test_set = AvalancheDataset(
+        test_set, transform=transforms.Compose([eval_transform]))
     benchmark = cir_slot_based(train_set, test_set, N, K, seed=seed)
     return benchmark
 

@@ -21,7 +21,7 @@ class PerClassAccuracy(Metric[float]):
         self.reset_mean_accuracy()
 
     def reset_mean_accuracy(self):
-        self.acc_metric = Accuracy(average="none", task="multiclass", 
+        self.acc_metric = Accuracy(average="none", task="multiclass",
                                    num_classes=self.n_classes)
         self.acc_metric.to(self.device)
 
@@ -40,7 +40,8 @@ class PerClassAccuracy(Metric[float]):
         self.reset_mean_accuracy()
 
 
-class SeenClassesAccuracyPluginMetric(GenericPluginMetric[float]):
+class SeenClassesAccuracyPluginMetric(GenericPluginMetric[float,
+                                                          PerClassAccuracy]):
     def __init__(self, reset_at, emit_at, mode, n_classes, device,
                  seen_classes_in_each_exp=None):
         self._accuracy = PerClassAccuracy(n_classes, device)

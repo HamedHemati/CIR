@@ -161,10 +161,23 @@ def cir_generator(
     # ----------> Stream details
     n_samples_per_exp = [len(samples_per_exp[i])
                          for i in range(stream_table.shape[1])]
+
+    # List of seen classes up to each experience
+    classes_in_each_exp = []
+    seen_classes = []
+    seen_classes_up_to_exp = []
+    for i, exp in enumerate(benchmark.train_stream):
+        classes_in_each_exp.append(exp.classes_in_this_experience)
+        seen_classes += exp.classes_in_this_experience
+        seen_classes_up_to_exp.append(list(set(seen_classes)))
+
+    # Benchmark details
     benchmark.details = {
         "first_occurrences": first_occurrences,
         "stream_table": stream_table,
-        "n_samples_per_exp": n_samples_per_exp
+        "n_samples_per_exp": n_samples_per_exp,
+        "classes_in_each_exp": classes_in_each_exp,
+        "seen_classes_up_to_exp": seen_classes_up_to_exp,
     }
 
     return benchmark
