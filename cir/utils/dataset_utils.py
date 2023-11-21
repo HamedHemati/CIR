@@ -1,6 +1,6 @@
 import torch
 
-from avalanche.benchmarks.utils import AvalancheSubset
+from avalanche.benchmarks.utils import classification_subset
 
 
 def get_dataset_subset_by_class_list(
@@ -8,7 +8,7 @@ def get_dataset_subset_by_class_list(
         subset_classes,
         num_samples=None,
         map_classes=True,
-) -> AvalancheSubset:
+):
     """ Returns subset of a dataset from a list of classes
     """
     targets = torch.LongTensor(dataset.targets)
@@ -31,7 +31,9 @@ def get_dataset_subset_by_class_list(
     else:
         class_mapping = None
 
+    print(class_mapping)
     # Create subset
-    subset_ds = AvalancheSubset(dataset, all_idx, class_mapping=class_mapping)
+    subset_ds = classification_subset(dataset, all_idx,
+                                      class_mapping=class_mapping)
 
     return subset_ds
